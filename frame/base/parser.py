@@ -4,11 +4,7 @@ import pyquery
 
 """
     需求字段：
-        标题、发表日期、浏览量、内容来源或作者、内容、图片url、
-        类型（1：星座综合类、2：星座排行类、3：星座职场类、4：星座时尚类、5：星座个性类、
-            6：星座知识类、7：星座爱情类、8：测试爱情类、9：测试性格类、10：测试趣味类、
-            11：测试财富类、12：测试智商类、13：测试职业类、14：测试社交类、15：测试综合类、
-            16：生肖综合类）
+        標題、發表日期、分類、標籤、內容、圖片
     
     需要的字段信息
         1. 网站根URL
@@ -16,12 +12,11 @@ import pyquery
         3. 解析器类型
             1. PARSER_PASSAGE_URL               文章URL
             2. PARSER_PASSAGE_TITLE             文章标题
-            3. PARSER_PASSAGE_AUTHOR            文章作者/来源
-            3. PARSER_PASSAGE_READ              阅读量
-            4. PARSER_PASSAGE_DATE              发表日期
-            5. PARSER_PASSAGE_CONTENT           文章内容
-            6. PARSER_PASSAGE_IMGURL            文章中的图片 URL
-            7. PARSER_PASSAGE_TYPE              文章类型
+            3. PARSER_PASSAGE_DATE              发表日期
+            4. PARSER_PASSAGE_CATEGORY          文章分類
+            5. PARSER_PASSAGE_TAG               文章標籤
+            6. PARSER_PASSAGE_CONTENT           文章内容
+            7. PARSER_PASSAGE_IMGURL            文章中的图片 URL
 """
 
 
@@ -36,22 +31,19 @@ class Parser(object):
     def _parser_passage_title (self, doc: str) -> (bool, str):
         return
 
-    def _parser_passage_author (self, doc: str) -> (bool, str):
-        return
-
-    def _parser_passage_read (self, doc: str) -> (bool, str):
-        return
-
     def _parser_passage_date (self, doc: str) -> (bool, str):
         return
 
-    def _parser_passage_content (self, doc: str) -> (bool, str, str, str):
+    def _parser_passage_category (self, doc: str) -> (bool, str):
         return
 
-    def _parser_passage_img_url (self, doc: str) -> (bool, str):
+    def _parser_passage_tag (self, doc: str) -> (bool, str):
         return
 
-    def _parser_passage_type (self, doc: str) -> (bool, str):
+    def _parser_passage_content (self, doc: str) -> (bool, str):
+        return
+
+    def _parser_passage_img_url (self, doc: str) -> (bool, str, bytes):
         return
 
     def get_parser_name (self):
@@ -70,18 +62,18 @@ class Parser(object):
             if doc == '' or doc == None:
                 return (False, '')
             return self._parser_passage_title(doc)
-        elif self.PARSER_PASSAGE_AUTHOR == parse_type:
+        elif self.PARSER_PASSAGE_DATA == parse_type:
             if doc == '' or doc == None:
                 return (False, '')
-            return self._parser_passage_author(doc)
-        elif self.PARSER_PASSAGE_READ == parse_type:
+            return self._parser_passage_data(doc)
+        elif self.PARSER_PASSAGE_CATEGORY == parse_type:
             if doc == '' or doc == None:
                 return (False, '')
-            return self._parser_passage_read(doc)
-        elif self.PARSER_PASSAGE_DATE == parse_type:
+            return self._parser_passage_category(doc)
+        elif self.PARSER_PASSAGE_TAG == parse_type:
             if doc == '' or doc == None:
                 return (False, '')
-            return self._parser_passage_date(doc)
+            return self._parser_passage_tag(doc)
         elif self.PARSER_PASSAGE_CONTENT == parse_type:
             if doc == '' or doc == None:
                 return (False, '')
@@ -90,10 +82,6 @@ class Parser(object):
             if doc == '' or doc == None:
                 return (False, '')
             return self._parser_passage_img_url(doc)
-        elif self.PARSER_PASSAGE_TYPE == parse_type:
-            if doc == '' or doc == None:
-                return (False, '')
-            return self._parser_passage_type(doc)
         else:
             if doc == '' or doc == None:
                 return (False, '')
@@ -101,9 +89,8 @@ class Parser(object):
 
     PARSER_PASSAGE_URL = 1
     PARSER_PASSAGE_TITLE = 2
-    PARSER_PASSAGE_AUTHOR = 3
-    PARSER_PASSAGE_READ = 4
-    PARSER_PASSAGE_DATE = 5
+    PARSER_PASSAGE_DATA = 3
+    PARSER_PASSAGE_CATEGORY = 4
+    PARSER_PASSAGE_TAG = 5
     PARSER_PASSAGE_CONTENT = 6
     PARSER_PASSAGE_IMGURL = 7
-    PARSER_PASSAGE_TYPE = 8

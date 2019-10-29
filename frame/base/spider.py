@@ -42,7 +42,7 @@ class Spider(object):
 
     def get_passage_list (self):
         if len(self._seedURL) <= 0:
-            log.error(self._name + '由于未定义seed url 导致获取book list 失败！')
+            log.error(self._name + '由于未定义seed url 导致获取passage list 失败！')
             return None
         try:
             for ik, iv in self._seedURL.items():
