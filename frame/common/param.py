@@ -7,8 +7,9 @@ MYSQL_USER = 'root'
 MYSQL_PASSWORD = '123456'
 MYSQL_XingZuo_DB = 'blog_sp'
 
-""" http://xingzuo.piaoliang.com 开始 """
-COM_PIAOLIANG_NAME = 'com_piaoliang'
-COM_PIAOLIANG_WEB_URL = 'http://xingzuo.piaoliang.com'
-""" http://xingzuo.piaoliang.com 结束 """
+""" https://www.linuxidc.com/ 开始 """
+COM_LINUXIDC_NAME = 'com_linuxidc'
+COM_LINUXIDC_WEB_URL = 'https://www.linuxidc.com/'
+""" https://www.linuxidc.com/ 結束 """
+
 

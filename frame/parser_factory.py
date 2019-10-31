@@ -1,9 +1,7 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3.7
 # -*- encoding=utf8 -*-
 from frame.common.param import *
-from frame.blog.com_xzw import COMXzwParser
-from frame.blog.net_d1xz import NTD1zxParser
-from frame.blog.com_piaoliang import CMPiaoliangParser
+from frame.blog_parser.com_linuxidc import COMLinuxidcParser
 
 
 class ParserFactory:
@@ -12,9 +10,7 @@ class ParserFactory:
             return self._parserDict[parser_name]
 
     _parserDict = {
-        COM_XZW_NAME:       COMXzwParser(),
-        NET_D1XZ_NAME:      NTD1zxParser(),
-        COM_PIAOLIANG_NAME: CMPiaoliangParser(),
+            COM_LINUXIDC_NAME : COMLinuxidcParser()
     }
 
 

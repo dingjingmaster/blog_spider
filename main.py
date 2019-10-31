@@ -1,5 +1,6 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3.7
 # -*- encoding=utf8 -*-
+
 from frame.log.log import log
 from frame.common.param import *
 from frame.thread import ThreadPool
@@ -12,11 +13,11 @@ if __name__ == '__main__':
     spiderFactory = SpiderFactory()
     tpool = ThreadPool()
 
-    """ http://xingzuo.piaoliang.com 开始 """
-    # xz = spiderFactory.get_spider(COM_PIAOLIANG_NAME)
-    # xz.set_seed_urls(xz_pl)
-    # tpool.set_spider(xz)
-    """ http://xingzuo.piaoliang.com 结束 """
+    """ https://www.linuxidc.com 开始 """
+    linuxidc = spiderFactory.get_spider (COM_LINUXIDC_NAME)
+    linuxidc.set_seed_urls(blog_linuxidc)
+    tpool.set_spider(linuxidc)
+    """ https://www.linuxidc.com 结束 """
 
     tpool.run()
     log.info('抓取任务完成!')
