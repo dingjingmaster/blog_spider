@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `blog_passage`
     `data`      INT(12),                                -- 发表/更新日期（20190909）
     `category`  VARCHAR(300) DEFAULT NULL,              -- 分类（字符串）
     `tag`       VARCHAR(300) NOT NULL,                  -- 标签（字符串）
-    `main_url`  VARCHAR(300) DEFAULT "",                -- 文章图片
+    `spider`    VARCHAR(100) NOT NULL,                  -- 爬虫名字（字符串）
     `content`   TEXT NOT NULL,                          -- 內容（字符串，以HTML或XML 保存）
 ) DEFAULT CHARSET = utf8;
 
