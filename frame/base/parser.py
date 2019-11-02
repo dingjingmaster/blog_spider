@@ -62,10 +62,10 @@ class Parser(object):
             if doc == '' or doc == None:
                 return (False, '')
             return self._parser_passage_title(doc)
-        elif self.PARSER_PASSAGE_DATA == parse_type:
+        elif self.PARSER_PASSAGE_DATE == parse_type:
             if doc == '' or doc == None:
                 return (False, '')
-            return self._parser_passage_data(doc)
+            return self._parser_passage_date(doc)
         elif self.PARSER_PASSAGE_CATEGORY == parse_type:
             if doc == '' or doc == None:
                 return (False, '')
@@ -89,7 +89,7 @@ class Parser(object):
 
     PARSER_PASSAGE_URL = 1
     PARSER_PASSAGE_TITLE = 2
-    PARSER_PASSAGE_DATA = 3
+    PARSER_PASSAGE_DATE = 3
     PARSER_PASSAGE_CATEGORY = 4
     PARSER_PASSAGE_TAG = 5
     PARSER_PASSAGE_CONTENT = 6

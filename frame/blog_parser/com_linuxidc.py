@@ -9,6 +9,10 @@ from frame.common.param import *
 from frame.common.util import Util
 from frame.log.log import log
 
+def norm_date (date: str):
+    return re.sub (r'(\[|\]|日期|:|：)', '', date)
+
+
 class COMLinuxidcParser(Parser):
     __doc__ = """ https://www.linuxidc.com/linuxit/ """
 
@@ -48,19 +52,35 @@ class COMLinuxidcParser(Parser):
     """ 時間 """
     def _parser_passage_date (self, doc: str) -> (bool, str):
         flag = False
-        return flag, ''
+        date = ''
+        datet = pyquery.PyQuery(doc).find('body>.twidth>#middle .mframe>.wrapper #printBody>table td').eq(0).text()
+        if None is not datet and '' != datet:
+            flag = True
+            date = norm_date (datet)
+        return flag, date.strip()
 
     """ 分類 """
     def _parser_passage_category (self, doc: str) -> (bool, str):
-        flag = False
-        return flag, ''
+        flag = True
+        return flag, '未知'
 
     """ 標籤 """
     def _parser_passage_tag (self, doc: str) -> (bool, str):
-        flag = False
-        return flag, ''
+        flag = True
+        return flag, '未知'
 
     """ 圖片 """
-    def _parser_passage_img_url (self, doc: str) -> (bool, str, bytes):
+    def _parser_passage_img_url (self, doc: str): 
         flag = False
-        return flag, ''
+        imageList = []
+        content = ''
+        contentt = pyquery.PyQuery(doc).find('body>.twidth>#middle .mframe>.wrapper #content').html()
+        if None is not contentt and '' != contentt:
+            flag = True
+            content = contentt
+        for img in pyquery.PyQuery (content).find('img').items():
+            src = img.attr('src')
+            if '/linuxfile/logo.gif' == src:
+                continue
+            imageList.append (src)
+        return flag, imageList

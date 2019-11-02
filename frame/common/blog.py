@@ -113,6 +113,14 @@ class Blog ():
     def get_tag(self) -> str:
         return self.__tag
 
+    def set_content (self, content: str):
+        if '' != content and None is not content:
+            self.__content = content
+        return self
+
+    def get_content (self) -> str:
+        return self.__content
+
     def set_spider_name(self, spider: str):
         if '' != spider and None is not spider:
             self.__sp = spider

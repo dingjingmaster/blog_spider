@@ -33,16 +33,14 @@ class COMLinuxidcSpider (Spider):
                     log.error('url:' + url + '解析 url 错误!')
                     continue
                 blogUrl = Util.check_url (blogUrl, self._webURL)
-                print (flag)
-                print (blogUrl)
+                blog.set_url (blogUrl)
 
                 # 解析博客 标题
                 flag, blogTitle = parser.parse(ct, parse_type=parser.PARSER_PASSAGE_TITLE)
                 if not flag:
                     log.error('url:' + url + '解析 title 错误!')
                     continue
-                print (flag)
-                print (blogTitle)
+                blog.set_title (blogTitle)
 
                 # 解析博客 内容
                 content = Spider.http_get (blogUrl)
@@ -53,11 +51,44 @@ class COMLinuxidcSpider (Spider):
                 if not flag:
                     log.error('url:' + blogUrl + '解析内容错误!')
                     continue
+                blog.set_content (blogContent)
 
-                print (flag)
-                print (blogContent)
+                # 解析博客 时间
+                flag, blogDate = parser.parse(content, parse_type=parser.PARSER_PASSAGE_DATE)
+                if not flag:
+                    log.error('url:' + blogUrl + '解析日期错误!')
+                    continue
+                blogDate = Util.time_str_stamp(blogDate, '%Y-%m-%d')
+                blog.set_date (blogDate)
 
-                print (ct.html())
+                # 解析博客 分类
+                flag, blogCategory = parser.parse (content, parse_type=parser.PARSER_PASSAGE_CATEGORY)
+                if not flag:
+                    log.error('url:' + blogUrl + '解析分类错误!')
+                    continue
+                blog.set_category (blogCategory)
+
+                # 解析博客 标签
+                flag, blogTag = parser.parse (content, parse_type=parser.PARSER_PASSAGE_TAG)
+                if not flag:
+                    log.error('url:' + blogUrl + '解析标签错误!')
+                    continue
+                blog.set_tag (blogTag)
+
+                # 解析博客 img url
+                blogImg = []
+                flag, blogImgt = parser.parse (content, parse_type=parser.PARSER_PASSAGE_IMGURL)
+                if not flag:
+                    log.error('url:' + blogUrl + '解析图片错误!')
+                    continue
+                for im in blogImgt:
+                    img = Image ()
+                    imgUrl = Util.check_url (im, self._webURL)
+                    blogImgContent = Spider.http_get (imgUrl, 0)
+                    img.set_url (imgUrl)
+                    img.set_content(imgUrl)
+                    blog.append_image(img)
+
                 print ('<-------------------------------------------------------------------->')
                 return;
                 exit (0)

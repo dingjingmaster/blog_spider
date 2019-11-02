@@ -20,7 +20,6 @@ class Util:
         tm = 0
         try:
             tm = time.mktime(time.strptime(time_str, fmt))
-
         except:
             pass
         return tm
