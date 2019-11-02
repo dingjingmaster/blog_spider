@@ -89,6 +89,8 @@ class COMLinuxidcSpider (Spider):
                     img.set_content(imgUrl)
                     blog.append_image(img)
 
+                # 保存mysql
+
                 print ('<-------------------------------------------------------------------->')
                 return;
                 exit (0)
