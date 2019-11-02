@@ -1,3 +1,10 @@
+-- 初始密码
+-- use mysql;
+-- UPDATE user SET authentication_string='' WHERE User='root';
+-- FLUSH PRIVILEGES;
+-- ALTER user 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+-- FLUSH PRIVILEGES;
+
 -- 数据库名字 blog_sp
 use blog_sp;
 
