@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `blog_passage` (
     `id`        INT AUTO_INCREMENT,                     -- id 自增
     `url`       VARCHAR(300) NOT NULL,                  -- 文章url，去重
     `title`     VARCHAR(300) DEFAULT NULL,              -- 文章标题（字符串）
-    `data`      INT(12),                                -- 发表/更新日期（20190909）
+    `time`      INT(12),                                -- 发表/更新日期（20190909）
     `category`  VARCHAR(300) DEFAULT NULL,              -- 分类（字符串）
     `tag`       VARCHAR(300) NOT NULL,                  -- 标签（字符串）
     `spider`    VARCHAR(100) NOT NULL,                  -- 爬虫名字（字符串）
