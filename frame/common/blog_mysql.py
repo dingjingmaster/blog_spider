@@ -50,10 +50,10 @@ class BlogMysql(object):
         return self
 
     """ 删除blog """
-    def blog_delete (self, bid) -> bool:
+    def blog_delete (self, url) -> bool:
         flag = False
         id = -1
-        msql = 'delete from `blog_image` where id = "{id}"'.format(id=bid)
+        msql = 'delete from `blog_image` where url = "{url}"'.format(url=url)
         try:
             cursor = self._connect.cursor()
             cursor.execute(msql)
@@ -64,8 +64,6 @@ class BlogMysql(object):
         except Exception as e:
             log.error('MySQL 执行错误: ' + str(e))
         return flag
-
-
 
     """ 检测blog url 是否存在 """
     def blog_exist (self, url) -> bool:
@@ -107,17 +105,12 @@ class BlogMysql(object):
         if (not Util.valid(title)) or (not Util.valid(spider) or (not Util.valid(url))):
             log.error ('title: %s spider: %s url: %s 参数错误!', title, spider, url)
             return flag, -1
-        msql = 'INSERT INTO `blog_passage` (' \
-               '`url`, `title`, `time`, `category`, `tag`, `spider`, `content`, `img_url`)' \
-               ' VALUES ("{url}", "{title}", "{tim}", "{category}", "{tag}", "{spider}", "{content}", "{imgUrl}");'.format( \
-               url=self._connect.escape_string(url),
-               title=self._connect.escape_string(title), tim=Util.stamp_time(tim, '%Y-%m-%d'),
-               category=self._connect.escape_string(category), tag=self._connect.escape_string(tag),
-               spider=self._connect.escape_string(spider), content=self._connect.escape_string(content),
-               imgUrl=self._connect.escape_string(imgUrl));
+        msql = """INSERT INTO `blog_passage` (
+               url, title, time, category, tag, spider, content, img_url)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
         try:
             curosr = self._connect.cursor()
-            curosr.execute(msql)
+            curosr.execute(msql, (url, title, Util.stamp_time(tim), category, tag, spider, content, imgUrl))
             self._connect.commit()
             id = int(curosr.lastrowid)
             if id >= 0:
@@ -136,15 +129,12 @@ class BlogMysql(object):
         if not Util.valid(content) or pid <= 0:
             log.error('url=%s 信息错误!', url)
             return flag, -1
-        msql = 'INSERT INTO `blog_image` (' \
-               '`url`, `name`, `ext_name`, `context`, `pid`)' \
-               ' VALUES ("{url}", "{name}", "{ext_name}", "{content}", "{pid}");'.format( \
-                name=self._connect.escape_string(name), ext_name=self._connect.escape_string(ext_name),
-                content=self._connect.escape_string(content), pid=pid,
-                url=self._connect.escape_string(url));
+        msql = """INSERT INTO `blog_image` ( 
+               `url`, `name`, `ext_name`, `context`, `pid`)
+                VALUES (%s, %s, %s, %s, %s);"""
         try:
             curosr = self._connect.cursor()
-            curosr.execute(msql)
+            curosr.execute(msql, (url, name, ext_name, pymysql.Binary(content), pid))
             self._connect.commit()
             id = int(curosr.lastrowid)
             if id >= 0:

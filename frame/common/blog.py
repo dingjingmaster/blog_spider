@@ -110,7 +110,7 @@ class Blog ():
             flag, iid = self.__mysql.insert_image(img.get_url(), img.get_name(), img.get_ext_name(), img.get_content(), bid)
             if not flag:
                 log.error ('图片: %s 保存失败!', img.get_url())
-                blog_delete (self.get_url())
+                self.__mysql.blog_delete (self.get_url())
                 return False
         return True
 
@@ -139,7 +139,7 @@ class Blog ():
         return self.__title
 
     def set_date(self, date: int):
-        if 0 > date:
+        if 0 < date:
             self.__date = date
         return self
 

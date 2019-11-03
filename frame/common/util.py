@@ -16,14 +16,14 @@ class Util:
         return url
 
     @staticmethod
-    def stamp_time (time_str, fmt: str) -> int:
+    def stamp_time (timeInt) -> int:
         tm = 0
         try:
-            tim = time.mktime(time.strptime(time_str, fmt))
-            tm = time.strftime("%Y%m%d%H%M", time.gmtime(tim))
-        except:
+            tm = time.strftime("%Y%m%d%H%M", time.localtime(timeInt))
+        except Exception as e:
+            print(e)
             pass
-        return tm
+        return int(tm)
 
     @staticmethod
     def time_str_stamp (time_str, fmt: str) -> int:
@@ -32,7 +32,7 @@ class Util:
             tm = time.mktime(time.strptime(time_str, fmt))
         except:
             pass
-        return tm
+        return int(tm)
 
     @staticmethod
     def valid (field) -> bool:
@@ -43,7 +43,6 @@ class Util:
 if __name__ == '__main__':
     tim = time.time()
     print (tim)
-    tim = '2019-10-10'
-    print (Util.stamp_time(tim, "%Y-%m-%d"))
+    print (Util.stamp_time(tim))
     print (Util.time_str_stamp(tim, "%Y-%m-%d"))
     pass

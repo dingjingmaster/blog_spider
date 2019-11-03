@@ -89,7 +89,7 @@ class COMLinuxidcSpider (Spider):
                     imgUrl = Util.check_url (im, self._webURL)
                     blogImgContent = Spider.http_get (imgUrl, 0)
                     img.set_url (imgUrl)
-                    img.set_content(imgUrl)
+                    img.set_content(blogImgContent)
                     blog.append_image(img)
 
                 # 保存mysql
@@ -97,5 +97,5 @@ class COMLinuxidcSpider (Spider):
                     log.info('文章: %s 保存成功!',blog.get_title())
                 else:
                     log.error('文章: %s 保存失败!', blog.get_title())
-    log.info('爬虫 %s 执行完成!', self._name)
+    log.info('爬虫 %s 执行完成!', COM_LINUXIDC_NAME)
 
