@@ -192,53 +192,6 @@ class XingZuo:
         def get_img (self):
             return self._img
 
-    # class XingZuoImg:
-    #     def __init__(self):
-    #         self._id = 0
-    #         self._xid = 0
-    #         self._img_url = ''
-    #         self._img_content = ''
-    #         self._name = ''
-    #         self._ext_name = ''
-    # 
-    #     def set_xid(self, cid):
-    #         if 0 <= cid:
-    #             self._xid = xid
-    #         return self
-    #     def get_xid(self):
-    #         return self._xid
-    # 
-    #     def get_id(self, nid):
-    #         return self._id
-    # 
-    #     def set_img_url(self, url):
-    #         if None != url and '' != url:
-    #             self._img_url = url
-    # 
-    #     def get_img_url(self):
-    #         return self._img_url
-    # 
-    #     def set_img_content(self, content):
-    #         if None != content:
-    #             self._img_content = content
-    #         return self
-    #     def get_img_content(self):
-    #         return self._img_content
-    # 
-    #     def set_name(self, name):
-    #         if None != name:
-    #             self._name = name
-    #         return self
-    #     def get_name(self):
-    #         return self._name
-    # 
-    #     def set_ext_name(self, ext_name):
-    #         if None != ext_name:
-    #             self._ext_name = ext_name
-    #         return self
-    #     def get_ext_name(self):
-    #         return self._ext_name
-
     class XingZuoMysql(Mysql):
         def __init__ (self):
             self.set_database(MYSQL_XingZuo_DB) \

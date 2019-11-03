@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
+import base64
+import hashlib
+import time
+
 
 from frame.common.util import Util
+from frame.common.mysql import Mysql
+from frame.common.param import *
+from frame.log.log import log
 
 """ 图片 """
 class Image():
@@ -136,4 +143,5 @@ class Blog ():
     def yield_image(self):
         for img in self.__image:
             yield img
+
 

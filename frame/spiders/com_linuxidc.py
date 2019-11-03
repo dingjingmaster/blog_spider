@@ -75,7 +75,7 @@ class COMLinuxidcSpider (Spider):
                     continue
                 blog.set_tag (blogTag)
 
-                # 解析博客 img url
+                # 解析博客 img url 并下载图片
                 blogImg = []
                 flag, blogImgt = parser.parse (content, parse_type=parser.PARSER_PASSAGE_IMGURL)
                 if not flag:
