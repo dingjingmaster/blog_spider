@@ -34,6 +34,10 @@ class COMLinuxidcSpider (Spider):
                     continue
                 blogUrl = Util.check_url (blogUrl, self._webURL)
                 blog.set_url (blogUrl)
+                # 检查是否存在
+                if blog.exist(blogUrl):
+                    log.info('文章url: %s 已存在!', blogUrl)
+                    continue
 
                 # 解析博客 标题
                 flag, blogTitle = parser.parse(ct, parse_type=parser.PARSER_PASSAGE_TITLE)
@@ -90,6 +94,10 @@ class COMLinuxidcSpider (Spider):
                     blog.append_image(img)
 
                 # 保存mysql
+                if blog.save_mysql():
+                    log.info('文章: %s 保存成功!',blog.get_title())
+                else:
+                    log.error('文章: %s 保存失败!', blog.get_title())
 
                 print ('<-------------------------------------------------------------------->')
                 return;

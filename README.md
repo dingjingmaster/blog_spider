@@ -5,6 +5,7 @@
 - mysql 数据库
 - python3.7
 - pyquery
+- pymysql
 
 
 

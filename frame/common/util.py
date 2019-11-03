@@ -16,6 +16,16 @@ class Util:
         return url
 
     @staticmethod
+    def stamp_time (time_str, fmt: str) -> int:
+        tm = 0
+        try:
+            tim = time.mktime(time.strptime(time_str, fmt))
+            tm = time.strftime("%Y%m%d%H%M", time.gmtime(tim))
+        except:
+            pass
+        return tm
+
+    @staticmethod
     def time_str_stamp (time_str, fmt: str) -> int:
         tm = 0
         try:
@@ -29,3 +39,11 @@ class Util:
         if (None is field) or ('' == field.strip()):
             return False
         return True
+
+if __name__ == '__main__':
+    tim = time.time()
+    print (tim)
+    tim = '2019-10-10'
+    print (Util.stamp_time(tim, "%Y-%m-%d"))
+    print (Util.time_str_stamp(tim, "%Y-%m-%d"))
+    pass

@@ -4,11 +4,11 @@ import base64
 import hashlib
 import time
 
-
 from frame.common.util import Util
-from frame.common.mysql import Mysql
+from frame.common.blog_mysql import BlogMysql
 from frame.common.param import *
 from frame.log.log import log
+
 
 """ 图片 """
 class Image():
@@ -18,6 +18,7 @@ class Image():
         self.__name = ''                    # 图片名字
         self.__extName = ''                 # 图片扩展名
         self.__content = ''                 # 图片内容
+        self.__pid = 0                      # 博客 id
 
     def set_id (self, iid: int):
         if iid >= 0:
@@ -26,6 +27,14 @@ class Image():
 
     def get_id (self):
         return self.__id
+
+    def set_pid (self, iid: int):
+        if iid >= 0:
+            self.__pid = iid
+        return self
+
+    def get_pid (self):
+        return self.__pid
 
     def set_url (self, url: str):
         if None is not url and '' != url:
@@ -71,6 +80,35 @@ class Blog ():
         self.__content = ''                 # 内容 HTML/XML
         self.__sp = spiderName              # 爬虫名字
         self.__image = []                   # 图片
+        self.__mysql = BlogMysql()
+        self.__mysql.set_ip(MYSQL_HOST)\
+                .set_port(MYSQL_PORT)\
+                .set_usr(MYSQL_USER)\
+                .set_password(MYSQL_PASSWORD)\
+                .set_database(MYSQL_BLOG_DB)\
+                .connect()
+
+    def exist (self, url: str):
+        return self.__mysql.blog_exist(url)
+
+    def save_mysql (self):
+        # 检测信息是否存在
+        if self.__mysql.blog_exist(self.get_url()):
+            log.info ('文章: %s 已存在!', self.get_title())
+            return True
+        flag, bid = self.__mysql.insert_blog (self.get_url() , self.get_title(),\
+                self.get_date(), self.get_category(), self.get_tag(), self.get_spider_name(), self.get_content())
+        if not flag:
+            return False
+        log.info('文章id: %d name: %s 插入成功!'.format(bid, self.get_title()))
+        # 检测图片是否存在
+        for img in self.__image:
+            flag, iid = self.__mysql.insert_image(img.get_url(), img.get_name(), img.get_ext_name(), img.get_content(), bid)
+            if not flag:
+                log.info ('图片: %s 已存在!', img.get_url())
+                continue
+            log.info ('图片: %s 插入成功!', img.get_url())
+        return True
 
     def set_id(self, bid: int):
         if id >= 0:
@@ -81,7 +119,7 @@ class Blog ():
         return self.__id
 
     def set_url(self, url: str):
-        if '' != url and None != url:
+        if ('' != url) and (None is not url):
             self.__url = url
         return self
 
@@ -89,7 +127,7 @@ class Blog ():
         return self.__url
 
     def set_title(self, title: str):
-        if '' != title and None is not title:
+        if ('' != title) and (None is not title):
             self.__title = title
         return self
 
@@ -143,5 +181,7 @@ class Blog ():
     def yield_image(self):
         for img in self.__image:
             yield img
+
+    
 
 
