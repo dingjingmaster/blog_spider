@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `blog_passage` (
     `tag`       VARCHAR(300) NOT NULL,                  -- 标签（字符串）
     `spider`    VARCHAR(100) NOT NULL,                  -- 爬虫名字（字符串）
     `content`   TEXT NOT NULL,                          -- 內容（字符串，以HTML或XML 保存）
+    `img_url`   TEXT,                                   -- 图片的url
     PRIMARY KEY (`id`)
 );
 

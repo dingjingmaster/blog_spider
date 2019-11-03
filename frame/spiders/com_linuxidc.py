@@ -80,7 +80,6 @@ class COMLinuxidcSpider (Spider):
                 blog.set_tag (blogTag)
 
                 # 解析博客 img url 并下载图片
-                blogImg = []
                 flag, blogImgt = parser.parse (content, parse_type=parser.PARSER_PASSAGE_IMGURL)
                 if not flag:
                     log.error('url:' + blogUrl + '解析图片错误!')
@@ -98,8 +97,6 @@ class COMLinuxidcSpider (Spider):
                     log.info('文章: %s 保存成功!',blog.get_title())
                 else:
                     log.error('文章: %s 保存失败!', blog.get_title())
-
-                print ('<-------------------------------------------------------------------->')
                 return;
                 exit (0)
             exit (0)

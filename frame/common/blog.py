@@ -92,22 +92,26 @@ class Blog ():
         return self.__mysql.blog_exist(url)
 
     def save_mysql (self):
+        imgs = [i.get_url() for i in self.__image]
         # 检测信息是否存在
         if self.__mysql.blog_exist(self.get_url()):
             log.info ('文章: %s 已存在!', self.get_title())
             return True
         flag, bid = self.__mysql.insert_blog (self.get_url() , self.get_title(),\
-                self.get_date(), self.get_category(), self.get_tag(), self.get_spider_name(), self.get_content())
+                self.get_date(), self.get_category(), self.get_tag(), self.get_spider_name(),\
+                self.get_content(), '|'.join(imgs))
         if not flag:
             return False
-        log.info('文章id: %d name: %s 插入成功!'.format(bid, self.get_title()))
         # 检测图片是否存在
         for img in self.__image:
+            if self.__mysql.image_exist(img.get_url()):
+                log.info ('图片: %s 已存在!', self.get_url())
+                continue
             flag, iid = self.__mysql.insert_image(img.get_url(), img.get_name(), img.get_ext_name(), img.get_content(), bid)
             if not flag:
-                log.info ('图片: %s 已存在!', img.get_url())
-                continue
-            log.info ('图片: %s 插入成功!', img.get_url())
+                log.error ('图片: %s 保存失败!', img.get_url())
+                blog_delete (self.get_url())
+                return False
         return True
 
     def set_id(self, bid: int):
