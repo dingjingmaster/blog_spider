@@ -97,7 +97,5 @@ class COMLinuxidcSpider (Spider):
                     log.info('文章: %s 保存成功!',blog.get_title())
                 else:
                     log.error('文章: %s 保存失败!', blog.get_title())
-                return;
-                exit (0)
-            exit (0)
+    log.info('爬虫 %s 执行完成!', self._name)
 
