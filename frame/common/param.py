@@ -11,6 +11,7 @@ MYSQL_BLOG_DB = 'blog_sp'
 """ https://www.linuxidc.com/ 开始 """
 COM_LINUXIDC_NAME = 'com_linuxidc'
 COM_LINUXIDC_WEB_URL = 'https://www.linuxidc.com/'
+COM_LINUXIDC_DIR = '/data/爬虫/com_linuxidc/'
 """ https://www.linuxidc.com/ 結束 """
 
 

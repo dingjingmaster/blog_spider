@@ -1,6 +1,5 @@
 #!/usr/bin/env python3.6
 # -*- encoding=utf8 -*-
-import os
 from frame.common.get import Get
 from frame.log.log import log
 
@@ -18,32 +17,14 @@ class Spider(object):
         self._name = 'base_spider'
         self._webURL = ''
         self._type = 0
+        self._save = ''
         self._filter = {}
-        self._dir = ''
 
     def get_name (self):
         return self._name
 
     def get_web_url (self):
         return self._webURL
-
-    def get_dir (self):
-        return self._dir
-
-    def set_dir (self, mdir: str):
-        obspath = os.path.abspath (mdir)
-        if os.path.exists(obspath):
-            if not os.path.isdir(obspath):
-                log.error(self._name + '不合法的保存文件夹！')
-                exit(1)
-            if not os.access(obspath, os.R_OK | os.W_OK):
-                log.error(self._name + '保存文件夹没有读写权限！')
-                exit(1)
-        else:
-            os.mkdir(obspath)
-        os.chmod(obspath, 0760)
-
-        return self
 
     def set_blog_url (self, book_url: str):
         if None is not book_url and '' != book_url:

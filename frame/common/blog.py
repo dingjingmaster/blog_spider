@@ -70,7 +70,7 @@ class Image():
 
 """ 博客文章 """
 class Blog ():
-    def __init__(self, spiderName):
+    def __init__(self, spiderName, save):
         self.__id = 0                       # 文章在数据库中的 ID
         self.__url = ''                     # 文章URL
         self.__title = ''                   # 标题
@@ -80,16 +80,32 @@ class Blog ():
         self.__content = ''                 # 内容 HTML/XML
         self.__sp = spiderName              # 爬虫名字
         self.__image = []                   # 图片
-        self.__mysql = BlogMysql()
-        self.__mysql.set_ip(MYSQL_HOST)\
+
+        self._save = save
+
+        self.__mysql = None                 # 保存musql
+        self.__dir = ''                     # 保存本地目录
+
+        if 'file' == self._save:
+            self.__dir
+            pass
+        elif 'mysql' == self._save:
+            self.__mysql = BlogMysql()
+            self.__mysql.set_ip(MYSQL_HOST)\
                 .set_port(MYSQL_PORT)\
                 .set_usr(MYSQL_USER)\
                 .set_password(MYSQL_PASSWORD)\
                 .set_database(MYSQL_BLOG_DB)\
                 .connect()
+        else:
+            log.error ('不支持的数据保存方式!')
+            exit(1)
 
     def exist (self, url: str):
         return self.__mysql.blog_exist(url)
+
+    def save (self):
+        pass
 
     def save_mysql (self):
         imgs = [i.get_url() for i in self.__image]

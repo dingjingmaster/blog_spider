@@ -12,7 +12,9 @@ class COMLinuxidcSpider (Spider):
     def __init__ (self):
         self._name = COM_LINUXIDC_NAME
         self._webURL = COM_LINUXIDC_WEB_URL
-        log.info('name:' + self._name + ' url:' + self._webURL + ' spider安裝成功!')
+        self._save = 'file'
+        self._dir = COM_LINUXIDC_DIR
+        log.info('name:' + self._name + ' url:' + self._webURL + ' dir:' + self._dir + ' spider安裝成功!')
 
     def check (self):
         pass
@@ -26,7 +28,7 @@ class COMLinuxidcSpider (Spider):
                 continue
             doc = parser.parse(text, rule='body>div>#middle .mframe>.wrapper>.mm')
             for ct in doc.children().items():
-                blog = Blog (self._name)
+                blog = Blog (self._name, self._save)
                 # 解析博客 URL
                 flag, blogUrl = parser.parse(ct, parse_type=parser.PARSER_PASSAGE_URL)
                 if not flag:
@@ -93,7 +95,7 @@ class COMLinuxidcSpider (Spider):
                     blog.append_image(img)
 
                 # 保存mysql
-                if blog.save_mysql():
+                if blog.save():
                     log.info('文章: %s 保存成功!',blog.get_title())
                 else:
                     log.error('文章: %s 保存失败!', blog.get_title())
