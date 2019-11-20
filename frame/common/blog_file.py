@@ -70,7 +70,7 @@ class BlogFile(object):
             log.error ('title: %s spider: %s url: %s 参数错误!', title, spider, url)
             return False
         indexfile = self._dir + '/index.txt'
-        with open(indexfile, os.O_RDWR | os.O_CREAT, 0660) as fw:
+        with open(indexfile, os.O_RDWR | os.O_EXLOCK | os.O_TRUNC |os.O_CREAT, 0660) as fw:
             fw.write('name:%s\n', title)
             fw.write('url:%s\n', url)
             fw.write('category:%s\n', category)
@@ -79,7 +79,7 @@ class BlogFile(object):
             fw.write('spider:%s\n', spider)
             fw.write('img:%s\n', imgUrl)
         passagefile = self._dir + '%s.html' % name
-        with open(indexfile, os.O_RDWR | os.O_CREAT, 0660) as fw:
+        with open(indexfile, os.O_RDWR | os.O_EXLOCK | os.O_TRUNC | os.O_CREAT, 0660) as fw:
             fw.write('<!Doctype html>
                         <html>
                             <head>
