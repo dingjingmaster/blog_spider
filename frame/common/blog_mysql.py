@@ -82,7 +82,7 @@ class BlogMysql(object):
         return flag
 
     """ 检测img url 是否存在 """
-    def image_exist (self, url) -> bool:
+    def image_exist (self, url:str) -> bool:
         flag = False
         id = -1
         msql = 'SELECT `id` FROM `blog_image` WHERE url = "{url}"'.format(url=url)
@@ -98,7 +98,7 @@ class BlogMysql(object):
         return flag
 
     """ 插入blog """
-    def insert_blog (self, url: str, title: str, tim: int, category: str, tag: str, spider: str, content: str, imgUrl: str):
+    def write_blog (self, url: str, title: str, tim: int, category: str, tag: str, spider: str, content: str, imgUrl: str):
         flag = False
         id = -1
         # 检查关键字段是否存在
@@ -122,7 +122,7 @@ class BlogMysql(object):
         return flag, id
 
     """ 插入img """
-    def insert_image (self, url: str, name: str, ext_name: str, content: str, pid: int):
+    def write_image (self, name: str, ext_name: str, content: str, url: str, pid: int):
         flag = False
         id = -1
         # 检查关键字段是否存在

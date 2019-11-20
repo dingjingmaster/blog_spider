@@ -13,8 +13,7 @@ class COMLinuxidcSpider (Spider):
         self._name = COM_LINUXIDC_NAME
         self._webURL = COM_LINUXIDC_WEB_URL
         self._save = 'file'
-        self._dir = COM_LINUXIDC_DIR
-        log.info('name:' + self._name + ' url:' + self._webURL + ' dir:' + self._dir + ' spider安裝成功!')
+        log.info('name:' + self._name + ' url:' + self._webURL + ' save type:' + self._save + ' spider安裝成功!')
 
     def check (self):
         pass
@@ -28,12 +27,12 @@ class COMLinuxidcSpider (Spider):
                 continue
             doc = parser.parse(text, rule='body>div>#middle .mframe>.wrapper>.mm')
             for ct in doc.children().items():
-                blog = Blog (self._name, self._save)
                 # 解析博客 URL
                 flag, blogUrl = parser.parse(ct, parse_type=parser.PARSER_PASSAGE_URL)
                 if not flag:
                     log.error('url:' + url + '解析 url 错误!')
                     continue
+                blog = Blog (self._name, blogUrl, self._save)
                 blogUrl = Util.check_url (blogUrl, self._webURL)
                 blog.set_url (blogUrl)
                 # 检查是否存在
@@ -91,10 +90,13 @@ class COMLinuxidcSpider (Spider):
                     imgUrl = Util.check_url (im, self._webURL)
                     blogImgContent = Spider.http_get (imgUrl, 0)
                     img.set_url (imgUrl)
+                    iname, iename = Util.image_name(imgUrl)
+                    img.set_name(iname)
+                    img.set_ext_name(iename)
                     img.set_content(blogImgContent)
                     blog.append_image(img)
 
-                # 保存mysql
+                # 保存
                 if blog.save():
                     log.info('文章: %s 保存成功!',blog.get_title())
                 else:

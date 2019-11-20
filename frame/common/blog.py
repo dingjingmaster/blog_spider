@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
 import base64
-import hashlib
 import time
 
 from frame.common.util import Util
 from frame.common.blog_mysql import BlogMysql
+from frame.common.blog_file import BlogFile
 from frame.common.param import *
 from frame.log.log import log
 
@@ -54,6 +54,7 @@ class Image():
 
     def get_ext_name (self):
         return self.__extName
+
     def set_ext_name (self, extName: str):
         if None is not extName and '' != extName:
             self.__extName = extName
@@ -70,7 +71,7 @@ class Image():
 
 """ 博客文章 """
 class Blog ():
-    def __init__(self, spiderName, save):
+    def __init__(self, spiderName, url, save):
         self.__id = 0                       # 文章在数据库中的 ID
         self.__url = ''                     # 文章URL
         self.__title = ''                   # 标题
@@ -81,17 +82,16 @@ class Blog ():
         self.__sp = spiderName              # 爬虫名字
         self.__image = []                   # 图片
 
-        self._save = save
+        self.__saveType = save              # 保存方式 mysql 或 file
+        self.__save = None                  # mysql 或 file
 
-        self.__mysql = None                 # 保存musql
-        self.__dir = ''                     # 保存本地目录
-
-        if 'file' == self._save:
-            self.__dir
-            pass
-        elif 'mysql' == self._save:
-            self.__mysql = BlogMysql()
-            self.__mysql.set_ip(MYSQL_HOST)\
+        if 'file' == self.__saveType:
+            self.__save = BlogFile()
+            self.__save.set_rootdir(LOCAL_SPIDER_DIR + '/' + self.__sp)\
+                    .set_dir(url)
+        elif 'mysql' == self.__saveType:
+            self.__save = BlogMysql()
+            self.__save.set_ip(MYSQL_HOST)\
                 .set_port(MYSQL_PORT)\
                 .set_usr(MYSQL_USER)\
                 .set_password(MYSQL_PASSWORD)\
@@ -102,31 +102,28 @@ class Blog ():
             exit(1)
 
     def exist (self, url: str):
-        return self.__mysql.blog_exist(url)
+        return self.__save.blog_exist(url)
 
     def save (self):
-        pass
-
-    def save_mysql (self):
         imgs = [i.get_url() for i in self.__image]
         # 检测信息是否存在
-        if self.__mysql.blog_exist(self.get_url()):
+        if self.__save.blog_exist(self.get_url()):
             log.info ('文章: %s 已存在!', self.get_title())
             return True
-        flag, bid = self.__mysql.insert_blog (self.get_url() , self.get_title(),\
+        flag, bid = self.__save.write_blog (self.get_url() , self.get_title(),\
                 self.get_date(), self.get_category(), self.get_tag(), self.get_spider_name(),\
                 self.get_content(), '|'.join(imgs))
         if not flag:
             return False
         # 检测图片是否存在
         for img in self.__image:
-            if self.__mysql.image_exist(img.get_url()):
+            if self.__save.image_exist(img.get_url()):
                 log.info ('图片: %s 已存在!', self.get_url())
                 continue
-            flag, iid = self.__mysql.insert_image(img.get_url(), img.get_name(), img.get_ext_name(), img.get_content(), bid)
+            flag, iid = self.__save.write_image(img.get_name(), img.get_ext_name(), img.get_content(), img.get_url(), bid)
             if not flag:
                 log.error ('图片: %s 保存失败!', img.get_url())
-                self.__mysql.blog_delete (self.get_url())
+                self.__save.blog_delete (self.get_url())
                 return False
         return True
 

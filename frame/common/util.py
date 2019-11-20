@@ -40,6 +40,17 @@ class Util:
             return False
         return True
 
+    @staticmethod
+    def image_name(url: str):
+        arr = url.split('/')
+        if len(arr) <= 0:
+            return "", ""
+        name = arr[-1]
+        arr = name.split('.')
+        if len(arr) <= 1:
+            return name, ""
+        return arr[0], arr[1]
+
 if __name__ == '__main__':
     tim = time.time()
     print (tim)
